@@ -5,6 +5,7 @@ pub enum SomethingOrNothing<T> {
 
 pub use self::SomethingOrNothing::*;
 type NumberOrNothing = SomethingOrNothing<i32>;
+type FloatOrNothing = SomethingOrNothing<f32>;
 
 impl<T> SomethingOrNothing<T> {
     fn new(o: Option<T>) -> Self {
@@ -51,11 +52,30 @@ impl Minimum for i32 {
     }
 }
 
+impl Minimum for f32 {
+    fn min(self, b: Self) -> Self {
+        if self < b {
+            self
+        } else {
+            b
+        }
+    }
+}
+
 impl NumberOrNothing {
-    fn print(self) {
+    pub fn print(self) {
         match self {
             Nothing => println!("The number is <nothing>"),
             Something(n) => println!("The number is {}", n),
+        }
+    }
+}
+
+impl FloatOrNothing {
+    pub fn print(self) {
+        match self {
+            Nothing => println!("The number is <nothing>"),
+            Something(f) => println!("The float is {:.2}", f),
         }
     }
 }
@@ -64,8 +84,16 @@ fn read_vec() -> Vec<i32> {
     vec![18, 5, 7, 3, 9, 27]
 }
 
+fn read_vec2() -> Vec<f32> {
+    vec![1.1, 2.2, 3.3]
+}
+
 pub fn main() {
     let vec = read_vec();
     let min = vec_min(vec);
-    min.print()
+    min.print();
+
+    let vec2 = read_vec2();
+    let min2 = vec_min(vec2);
+    min2.print();
 }
